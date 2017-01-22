@@ -1,6 +1,6 @@
 'use strict';
 
-var observer = new function(){
+var Observer = function(){
 
 	var listeners = [];
 
@@ -9,7 +9,7 @@ var observer = new function(){
 		listeners[e].push(handler);
 	};
 
-	this.unSubscribe = function(e, handler){
+	this.unsubscribe = function(e, handler){
 
 		if(!listeners[e]) return false;
 		if(!handler) return delete listeners[e];
