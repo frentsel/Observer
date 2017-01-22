@@ -18,12 +18,12 @@ var secondHandler = function (data) {
 eventer.subscribe('Action', firstHandler);
 eventer.subscribe('Action', secondHandler);
 ```
-*Call event 'Action'*
+*Call 'Action'*
 ```javascript
 eventer.publish('Action', Date.now().toString());
 ```
 
-Result
+Result in console
 ```javascript
 Action: firstHandler, data:  1485090689876
 Action: secondHandler, data:  1485090689876
@@ -34,7 +34,7 @@ Action: secondHandler, data:  1485090689876
 eventer.unsubscribe('Action', firstHandler);
 eventer.publish('Action', Date.now().toString());
 ```
-Result
+Result in console
 ```javascript
 Action: secondHandler, data:  1485090689879
 ```
