@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Observer JS</title>
+	<script src="./observer.js"></script>
+</head>
+<body>
+<h1>The tiny js library for manage of events</h1>
+<script>
+
+	var firstHandler = function (data) {
+		console.info("Action: firstHandler, data: ", data);
+	};
+
+	var secondHandler = function (data) {
+		console.info("Action: secondHandler, data: ", data);
+	};
+
+	observer.subscribe('Action', firstHandler);
+	observer.subscribe('Action', secondHandler);
+
+	observer.publish('Action', Date.now().toString());
+
+	console.info("------------------------\n");
+
+	observer.unSubscribe('Action', firstHandler);
+	observer.publish('Action', Date.now().toString());
+
+	console.info("------------------------\n");
+
+	observer.unSubscribe('Action', secondHandler);
+	observer.publish('Action', Date.now().toString());
+
+</script>
+</body>
+</html>
