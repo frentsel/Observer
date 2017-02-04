@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Observer</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <style>
+        .hide {
+            display: none;
+        }
+        #main {
+            width: 480px;
+            margin: 0 auto;
+        }
+        #messages {
+            padding: 0 24px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="observer.js"></script>
+</head>
+<body>
+<div class="row" id="main">
+    <div class="col s12">
+        <ul id="listeners" class="collection with-header">
+            <li class="collection-header"><h5>Listeners</h5></li>
+        </ul>
+    </div>
+    <form class="col s12">
+        <div class="input-field col s6">
+            <input placeholder="Name" id="listener" type="text">
+            <button onclick="manger.addNewListener()" type="button" class="waves-effect waves-light btn">Add new listener</button>
+        </div>
+        <div class="input-field col s6">
+            <input placeholder="Message" id="news" type="text">
+            <button onclick="manger.publish()" type="button" class="waves-effect waves-light btn">Send a message</button>
+        </div>
+    </form>
+    <div class="col s12" id="messages">
+    </div>
+</div>
+<script type="text/html" id="userTpl">
+    <li class="collection-item">
+        <div>
+            {name}
+            <a href="javascript:" class="secondary-content" onclick="manger.unsubscribe(this, '{name}')">
+                <i class="material-icons">visibility</i>
+            </a>
+            <a href="javascript:" class="secondary-content hide" onclick="manger.subscribe(this, '{name}')">
+                <i class="material-icons">visibility_off</i>
+            </a>
+        </div>
+    </li>
+</script>
+<script>
+    var eventer = new Observer();
+
+    var User = function(name){
+
+        var _this = this;
+
+        this.name = name;
+        this.handler = function (news) {
+            $('#messages').append('<p><b>'+_this.name+'</b> has got new message: <i>'+news+'</i></p>');
+        };
+        return this;
+    };
+
+    var manger = {
+        listeners: {},
+        publish: function () {
+
+            var $news = $('#news'),
+                news = $news.val();
+
+            if(news.length === 0) return false;
+
+            $news.val('');
+            $('#messages').html('');
+            eventer.publish('news', news);
+        },
+        addNewListener: function () {
+
+            var $listener = $('#listener'),
+                userName = $listener.val();
+
+            if(userName.length === 0) return false;
+
+            this.render([userName]);
+            $listener.val('');
+            $('#messages').html('');
+        },
+        subscribe: function (obj, name) {
+            $(obj).closest('div').find('a').toggleClass('hide');
+            eventer.subscribe('news', this.listeners[name].handler);
+        },
+        unsubscribe: function (obj, name) {
+            $(obj).closest('div').find('a').toggleClass('hide');
+            eventer.unsubscribe('news', this.listeners[name].handler);
+        },
+        render: function (users) {
+
+            var _this = this,
+                tpl = $('#userTpl').html(),
+                user;
+
+            users.map(function (name) {
+                user = new User(name);
+                _this.listeners[name] = user;
+                eventer.subscribe('news', user.handler);
+                $('#listeners').append(tpl.split('{name}').join(name));
+            });
+        },
+        init: function (users) {
+            this.render(users);
+        }
+    };
+
+    manger.init([
+        'Sonya',
+        'Marina',
+        'Anya'
+    ]);
+
+</script>
+</body>
+</html>
