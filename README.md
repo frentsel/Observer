@@ -1,4 +1,5 @@
 # Observer JS
+![preview](./demo.jpg)
 The tiny js library for manage of events. 
 You also can pass some data into event. 
 Each different event can have a multiple handlers. 
