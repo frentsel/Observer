@@ -1,0 +1,36 @@
+.hide {
+	display: none;
+}
+
+.logo {
+	opacity: .5;
+	display: inherit;
+}
+
+.logo:hover {
+	opacity: .7;
+}
+
+svg {
+	float: left;
+	margin-right: 3px;
+	margin-top: 3px;
+	fill: #2196f3;
+}
+
+#main {
+	width: 480px;
+	margin: 0 auto;
+}
+
+#messages {
+	padding: 0 24px;
+}
+
+button {
+	width: 100%;
+}
+
+i.material-icons.inactive {
+	color: #bbb;
+}

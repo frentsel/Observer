@@ -4,44 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>Observer js demo web application</title>
+
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-    <style>
-        .hide {
-            display: none;
-        }
-        .logo {
-            opacity: .5;
-            display: inherit;
-        }
-        .logo:hover {
-            opacity: .7;
-        }
-        svg {
-            float: left;
-            margin-right: 3px;
-            margin-top: 3px;
-            fill: #2196f3;
-        }
-        #main {
-            width: 480px;
-            margin: 0 auto;
-        }
-        #messages {
-            padding: 0 24px;
-        }
-        button {
-            width: 100%;
-        }
-        i.material-icons.inactive {
-            color: #bbb;
-        }
-    </style>
+    <link rel="stylesheet" href="./main.css">
+
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-    <script src="observer.js"></script>
+    <script src="./observer.js"></script>
+    <script src="./main.js" defer></script>
 </head>
 <body>
 <div class="row" id="main">
@@ -85,78 +59,6 @@
             </a>
         </div>
     </li>
-</script>
-
-<script>
-    var eventer = new Observer();
-
-    var User = function(name){
-
-        var _this = this;
-
-        this.name = name;
-        this.handler = function (news) {
-            $('#messages').append('<p><b>'+_this.name+'</b> has got new message: <i>'+news+'</i></p>');
-        };
-        return this;
-    };
-
-    var manger = {
-        listeners: {},
-        publish: function () {
-
-            var $news = $('#news'),
-                news = $news.val();
-
-            if(news.length === 0) return false;
-
-            $news.val('');
-            $('#messages').html('');
-            eventer.publish('news', news);
-        },
-        addNewListener: function () {
-
-            var $listener = $('#listener'),
-                userName = $listener.val();
-
-            if(userName.length === 0) return false;
-
-            this.render([userName]);
-            $listener.val('');
-            $('#messages').html('');
-        },
-        subscribe: function (obj, name) {
-            $(obj).closest('div').find('a').toggleClass('hide');
-            eventer.subscribe('news', this.listeners[name].handler);
-        },
-        unsubscribe: function (obj, name) {
-            $(obj).closest('div').find('a').toggleClass('hide');
-            eventer.unsubscribe('news', this.listeners[name].handler);
-        },
-        render: function (users) {
-
-            var _this = this,
-                tpl = $('#userTpl').html(),
-                user;
-
-            users.map(function (name) {
-                user = new User(name);
-                _this.listeners[name] = user;
-                eventer.subscribe('news', user.handler);
-                $('#listeners').append(tpl.split('{name}').join(name));
-            });
-        },
-        init: function (users) {
-            this.render(users);
-        }
-    };
-
-    manger.init([
-        'Sonya',
-        'Marina',
-        'Anya'
-    ]);
-
 </script>
 </body>
 </html>
