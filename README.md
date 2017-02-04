@@ -7,6 +7,8 @@ Available such methods:
 - unsubscribe
 - publish
 
+[Demo](https://frentsel.github.io/Observer/index.html)
+
 *Example for use*
 
 ```javascript
