@@ -19,8 +19,12 @@
         #messages {
             padding: 0 24px;
         }
+        button {
+            width: 100%;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
     <script src="observer.js"></script>
 </head>
 <body>
@@ -33,7 +37,7 @@
     <form class="col s12">
         <div class="input-field col s6">
             <input placeholder="Name" id="listener" type="text">
-            <button onclick="manger.addNewListener()" type="button" class="waves-effect waves-light btn">Add new listener</button>
+            <button onclick="manger.addNewListener()" type="button" class="waves-effect waves-light btn blue">Add new listener</button>
         </div>
         <div class="input-field col s6">
             <input placeholder="Message" id="news" type="text">
@@ -56,6 +60,7 @@
         </div>
     </li>
 </script>
+
 <script>
     var eventer = new Observer();
 
