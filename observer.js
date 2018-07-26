@@ -20,9 +20,7 @@ var Observer = function() {
 
   this.publish = (e, ...args) => {
     if (listeners[e]) {
-      listeners[e].map((handler) => {
-        handler.apply(null, args);
-      });
+      listeners[e].map((handler) => handler.apply(null, args));
     }
   };
 };
