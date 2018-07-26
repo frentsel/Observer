@@ -15,12 +15,14 @@ var Observer = function() {
     if (!handler)
       return delete listeners[e];
 
-    listeners[e].map((_handler, n) => handler === _handler && delete listeners[e][n]);
+    listeners[e].map((_handler, n) => {
+      handler === _handler && delete listeners[e][n];
+    });
   };
 
   this.publish = (e, ...args) => {
-    if (listeners[e]) {
-      listeners[e].map((handler) => handler.apply(null, args));
-    }
+    listeners[e] && listeners[e].map(handler => {
+      handler.apply(null, args);
+    });
   };
 };
