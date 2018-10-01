@@ -1,60 +1,55 @@
 "use strict";
 
-var eventer = new Observer();
+var observer = new Observer();
 
-var User = function(name){
-
-	var _this = this;
-
+var User = function(name) {
 	this.name = name;
-	this.handler = function (news) {
-		$('#messages').append('<p><b>'+_this.name+'</b> has got new message: <i>'+news+'</i></p>');
+	this.handler = (news) => {
+		$('#messages').append('<p><b>' + this.name + '</b>: <i>' + news + '</i></p>');
 	};
-	return this;
 };
 
 var manger = {
 	listeners: {},
-	publish: function () {
+	publish: function() {
 
-		var $news = $('#news'),
-			news = $news.val();
+		var $news = $('#news');
+		var news = $news.val();
 
-		if(news.length === 0) return false;
+		if (news.length === 0) return false;
 
 		$news.val('');
 		$('#messages').html('');
-		eventer.publish('news', news);
+		observer.publish('news', news);
 	},
-	addNewListener: function () {
+	addNewListener: function() {
 
-		var $listener = $('#listener'),
-			userName = $listener.val();
+		var $listener = $('#listener');
+		var userName = $listener.val();
 
-		if(userName.length === 0) return false;
+		if (userName.length === 0) return false;
 
 		this.list([userName]);
 		$listener.val('');
 		$('#messages').html('');
 	},
-	subscribe: function (obj, name) {
+	subscribe: function(obj, name) {
 		$(obj).closest('div').find('a').toggleClass('hide');
-		eventer.subscribe('news', this.listeners[name].handler);
+		observer.subscribe('news', this.listeners[name].handler);
 	},
-	unsubscribe: function (obj, name) {
+	unsubscribe: function(obj, name) {
 		$(obj).closest('div').find('a').toggleClass('hide');
-		eventer.unsubscribe('news', this.listeners[name].handler);
+		observer.unsubscribe('news', this.listeners[name].handler);
 	},
-	list: function (users) {
+	list: function(users) {
 
-		var _this = this,
-			tpl = $('#userTpl').html(),
-			user;
+		var tpl = $('#userTpl').html();
+		var user;
 
-		users.map(function (name) {
+		users.map((name) => {
 			user = new User(name);
-			_this.listeners[name] = user;
-			eventer.subscribe('news', user.handler);
+			this.listeners[name] = user;
+			observer.subscribe('news', user.handler);
 			$('#listeners').append(tpl.split('{name}').join(name));
 		});
 	}

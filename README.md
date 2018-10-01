@@ -13,37 +13,36 @@ Available such methods:
 *Example for use*
 
 ```javascript
-var eventer = new Observer;
-		
-var firstHandler = function (data) {
-	console.info("Action: firstHandler, data: ", data);
+var observer = new Observer;
+var subscriberA = (data) => {
+  console.info("Action: subscriberA, data: ", data);
 };
 
-var secondHandler = function (data) {
-	console.info("Action: secondHandler, data: ", data);
+var subscriberB = function (data) {
+  console.info("Action: subscriberB, data: ", data);
 };
 
-// Subscribe on 'Action' event
-eventer.subscribe('Action', firstHandler);
-eventer.subscribe('Action', secondHandler);
+// Subscribe on 'Action'
+observer.subscribe('Action', subscriberA);
+observer.subscribe('Action', subscriberB);
 ```
 *Call 'Action'*
 ```javascript
-eventer.publish('Action', Date.now().toString());
+observer.publish('Action', Date.now().toString());
 ```
 
-Result in console
+Expected result in console
 ```javascript
-Action: firstHandler, data:  1485090689876
-Action: secondHandler, data:  1485090689876
+Action: subscriberA, data:  1485090689876
+Action: subscriberB, data:  1485090689876
 ```
 
-*Unsubscribe firstHandler from 'Action'*
+*Unsubscribe subscriberA from 'Action'*
 ```javascript
-eventer.unsubscribe('Action', firstHandler);
-eventer.publish('Action', Date.now().toString());
+observer.unsubscribe('Action', subscriberA);
+observer.publish('Action', Date.now().toString());
 ```
 Result in console
 ```javascript
-Action: secondHandler, data:  1485090689879
+Action: subscriberB, data:  1485090689879
 ```

@@ -1,28 +1,32 @@
 var Observer = function() {
 
-  var listeners = {};
+  var subscribers = {};
 
-  this.subscribe = (e, handler) => {
-    !listeners[e] && (listeners[e] = []);
-    listeners[e].push(handler);
+  this.subscribe = (action, subscriber) => {
+    subscribers[action] || (subscribers[action] = []);
+    subscribers[action].push(subscriber);
   };
 
-  this.unsubscribe = (e, handler) => {
+  this.unsubscribe = (action, subscriber) => {
 
-    if (!listeners[e])
-      return false;
+    if (!subscribers[action]) return false;
 
-    if (!handler)
-      return delete listeners[e];
+    if (!subscriber) return delete subscribers[action];
 
-    listeners[e].map((_handler, n) => {
-      handler === _handler && delete listeners[e][n];
+    subscribers[action].forEach((_subscriber, n) => {
+
+      if (subscriber !== _subscriber) return false;
+
+      delete subscribers[action][n];
     });
   };
 
-  this.publish = (e, ...args) => {
-    listeners[e] && listeners[e].map(handler => {
-      handler.apply(null, args);
+  this.publish = function(action, ...args) {
+
+    if (!subscribers[action]) return false;
+
+    subscribers[action].forEach((subscriber) => {
+      subscriber.apply(this, args);
     });
   };
 };
